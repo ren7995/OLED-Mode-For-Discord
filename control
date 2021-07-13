@@ -1,0 +1,9 @@
+Package: me.lau.oledcord
+Name: OLED Mode for Discord
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: ren7995
+Author: ren7995
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)

@@ -24,7 +24,10 @@ static void hooked_RCTView_setBackgroundColor(UIView *self, SEL _cmd, UIColor *c
 static void (*orig_UIView_setBackgroundColor)(UIView *, SEL, UIColor *);
 static void hooked_UIView_setBackgroundColor(UIView *self, SEL _cmd, UIColor *color) {
     if(![color isEqual:[UIColor clearColor]] && ![self isKindOfClass:[UILabel class]]) {
-        color = [UIColor blackColor];
+        CGFloat red = 0, green = 0, blue = 0, alpha = 0;
+        [color getRed:&red green:&green blue:&blue alpha:&alpha];
+        if(red < 0.25 && green < 0.25 && blue < 0.25)
+            color = [UIColor blackColor];
     }
     orig_UIView_setBackgroundColor(self, _cmd, color);
 }

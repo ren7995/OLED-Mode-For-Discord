@@ -26,7 +26,7 @@ static void hooked_UIView_setBackgroundColor(UIView *self, SEL _cmd, UIColor *co
     if(![color isEqual:[UIColor clearColor]] && ![self isKindOfClass:[UILabel class]]) {
         CGFloat red = 0, green = 0, blue = 0, alpha = 0;
         [color getRed:&red green:&green blue:&blue alpha:&alpha];
-        if(red < 0.25 && green < 0.25 && blue < 0.25)
+        if(red < 0.25 && green < 0.25 && blue < 0.25 && alpha > 0.75)
             color = [UIColor blackColor];
     }
     orig_UIView_setBackgroundColor(self, _cmd, color);

@@ -1,6 +1,6 @@
 Package: me.lau.oledcord
 Name: OLED Mode for Discord
-Version: 1.0.0
+Version: 1.0.1
 Architecture: iphoneos-arm
 Description: True OLED dark mode for the iOS Discord app
 Maintainer: ren7995

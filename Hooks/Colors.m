@@ -5,17 +5,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#include <objc/runtime.h>
 #include <substrate.h>
 
 // RCTView - (void)setBackgroundColor:(UIColor *)color
 static void (*orig_RCTView_setBackgroundColor)(UIView *, SEL, UIColor *);
 static void hooked_RCTView_setBackgroundColor(UIView *self, SEL _cmd, UIColor *color) {
-    if(![color isEqual:[UIColor clearColor]]) {
-        CGFloat red = 0, green = 0, blue = 0, alpha = 0;
-        [color getRed:&red green:&green blue:&blue alpha:&alpha];
-        if(red < 0.25 && green < 0.25 && blue < 0.25)
-            color = [UIColor colorWithRed:red / 5 green:green / 5 blue:blue / 5 alpha:alpha];
+    int hour = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:NSDate.date];
+    if(hour >= 18 || hour <=6) {
+        if(![color isEqual:[UIColor clearColor]]) {
+            CGFloat red = 0, green = 0, blue = 0, alpha = 0;
+            [color getRed:&red green:&green blue:&blue alpha:&alpha];
+            if(red < 0.25 && green < 0.25 && blue < 0.25)
+                color = [UIColor colorWithRed:red / 5 green:green / 5 blue:blue / 5 alpha:alpha];
+        }
     }
     orig_RCTView_setBackgroundColor(self, _cmd, color);
 }
@@ -23,11 +25,14 @@ static void hooked_RCTView_setBackgroundColor(UIView *self, SEL _cmd, UIColor *c
 // UIView - (void)setBackgroundColor:(UIColor *)color
 static void (*orig_UIView_setBackgroundColor)(UIView *, SEL, UIColor *);
 static void hooked_UIView_setBackgroundColor(UIView *self, SEL _cmd, UIColor *color) {
-    if(![color isEqual:[UIColor clearColor]] && ![self isKindOfClass:[UILabel class]]) {
-        CGFloat red = 0, green = 0, blue = 0, alpha = 0;
-        [color getRed:&red green:&green blue:&blue alpha:&alpha];
-        if(red < 0.25 && green < 0.25 && blue < 0.25 && alpha > 0.75)
-            color = [UIColor blackColor];
+    int hour = [NSCalendar.currentCalendar component:NSCalendarUnitHour fromDate:NSDate.date];
+    if(hour >= 18 || hour <=6) {
+        if(![color isEqual:[UIColor clearColor]] && ![self isKindOfClass:[UILabel class]]) {
+            CGFloat red = 0, green = 0, blue = 0, alpha = 0;
+            [color getRed:&red green:&green blue:&blue alpha:&alpha];
+            if(red < 0.25 && green < 0.25 && blue < 0.25 && alpha > 0.75)
+                color = [UIColor blackColor];
+        }
     }
     orig_UIView_setBackgroundColor(self, _cmd, color);
 }
